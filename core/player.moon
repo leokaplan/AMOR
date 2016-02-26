@@ -8,32 +8,26 @@ class player extends actor
         @vy = 0
         @walk_speed = @global.Mcw
         @jump_power = @h*2 
+        @\equip gun, @w/2, @h/2, bullet
         -- distance from feet to ground on the top of the jump parabole
-        @control = {
-            a:  {hold:->@\walk_left!}
-            d:  {hold:->@\walk_right!}
-            w:  {hold:-> @\walk_up!}
-            s:  {hold:-> @\walk_down!}
-            j:  {press:->@\shoot_left!}
-            l:  {press:->@\shoot_right!}
-            i:  {press:-> @\shoot_up!}
-            k:  {press:-> @\shoot_down!}
-            f:  {press:-> @\guard!}
-            e:  {press:-> if @life < @maxlife then @life += 1 }
-            z:  {press:-> print @x,@y}
-        }
-        @\every 0.1, -> @\action!
         @bulletcolor = {250,50,50}
         @canonw = @global.Mcw
         @canonh = @global.Mch
-        @in_ground = false
-        @cooldown = false
-        @onguard = false
         @impulse = false
         @alive = true
         @life = 5
         @maxlife = 7
-        @key = {}
+    hold_a:=> @\walk_left!
+    hold_d:=> @\walk_right!
+    hold_w:=> @\walk_up!
+    hold_s:=> @\walk_down!
+    press_j:=> @\shoot_left!
+    press_l:=>@\shoot_right!
+    press_i:=> @\shoot_up!
+    press_k:=> @\shoot_down!
+    press_f:=> @\guard!
+    press_e:=> if @life < @maxlife then @life += 1 
+    press_z:=> print @x,@y
         
     canonx: => @x + @w/2
     canony: => @y + @h/2 
@@ -91,7 +85,7 @@ class player extends actor
         --print @\checkcol o
         @\block(o,{"wall","enemy","boss"})
         if @global.kind("bullet") then
-            if not @global.kind("player") then
+            if not @global.kind("player_bullet") then
                 if not @onguard then
                     @life -= 1
                     @hit = true

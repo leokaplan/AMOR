@@ -1,0 +1,15 @@
+[submodule "core/lib/cron.lua"]
+	path = core/lib/cron.lua
+	url = https://github.com/kikito/cron.lua
+[submodule "core/lib/gamera"]
+	path = core/lib/gamera
+	url = https://github.com/kikito/gamera
+[submodule "core/lib/anim8"]
+	path = core/lib/anim8
+	url = https://github.com/kikito/anim8
+[submodule "core/lib/light_world.lua"]
+	path = core/lib/light_world.lua
+	url = https://github.com/tanema/light_world.lua
+[submodule "core/lib/HC"]
+	path = core/lib/HC
+	url = https://github.com/vrld/HC

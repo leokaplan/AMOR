@@ -1,43 +1,5 @@
 entity  = require "entity"
 class actor extends entity
-    walk_right: =>
-        @x += @walk_speed
-    walk_left: => 
-        @x -= @walk_speed
-    walk_up: => 
-        @y -= @walk_speed
-    walk_down: => 
-        @y += @walk_speed
-    shoot_up: =>
-        if not @cooldown then 
-            @diry = -1
-            @dirx = 0
-            @\shoot!
-    shoot_down: =>
-        if not @cooldown then 
-            @diry = 1
-            @dirx = 0
-            @\shoot!
-    shoot_left: =>
-        if not @cooldown then 
-            @dirx = -1
-            @diry = 0
-            @\shoot!
-    shoot_right: =>
-        if not @cooldown then 
-            @dirx = 1
-            @diry = 0
-            @\shoot!
-    shoot: => 
-        if not @cooldown then 
-            if @spawn_bullet then @\spawn_bullet!
-            @cooldown = true
-            @\oneshot 0.2, -> @cooldown = false
-    guard:  => 
-        if not @onguard then 
-            @c = {}
-            @onguard = true
-            @\oneshot 0.8, -> @onguard = false
     checkcol: (o) => 
         left = o.x < @x + @w and @x + @w < o.x +o.w 
         right = o.x < @x and @x < o.x +o.w 
@@ -49,7 +11,7 @@ class actor extends entity
         for k,v in pairs t do 
             if @global.kind(o,v) then
                 if right and left and up and down then 
-                    print "erro na fisica"
+                    print "error"
                 if up and down or not (up or down)then
                     if right then
                         @x += @walk_speed
@@ -62,12 +24,12 @@ class actor extends entity
                         @y += @walk_speed
                         --@y += @walk_speed
                         --@y -= @walk_speed
+    equip:(o,...) =>
+        @\spawn o @global @ ...
     new:(global, x, y, w, h) =>
         super global, x, y
+        @speed_x = 0
+        @speed_y = 0
         @w = w*@global.Mcw
         @h = h*@global.Mch
-        @bulletcolor = {200,100,200}
-        @cooldown = false
-        @in_ground = false
-        @onguard = false
         @alive = true

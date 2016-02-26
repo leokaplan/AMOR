@@ -1,0 +1,64 @@
+#!/usr/bin/env lua
+--[[
+ amor (command) dir
+ command: make, build, run, make run, init, update
+ examples:
+   amor make examples/sidescroller
+   amor make run examples/sidescroller
+   project_dir $ amor make .
+
+ make 
+     compile files
+ build
+     create binaries
+ run 
+     run compiled files
+ make run 
+     compile and run
+ init 
+     copy the framework and create project structure
+ update
+     updates the framework and submodules in respect to git remote
+--]]
+local lfs = require "lfs"
+
+local function help()
+    print("Usage: amor command directory\n")
+    print("command list:")
+end
+local function main()
+    local command = arg[1]
+    local dir = arg[2]
+    local current_dir = lfs.currentdir()
+    if command and dir then
+        --check if dir is actually a dir
+        if command == "make" then
+            --cd dir
+            compile("src","compiled_lua")
+        elseif command == "make run" then
+            --cd dir
+            compile("src","compiled_lua")
+            run("compiled_lua") 
+        elseif command == "build" then
+        end
+    else
+        help()
+    end
+    --cd current_dir 
+end
+function exec(str)
+    assert(os.execute(str))
+end
+function compile(src,target) 
+    exec("moonc -t ".. target .. " " .. src .."*.moon")
+end
+function run(dir) 
+    exec("cd "..dir) 
+    exec("love .")
+end
+local exit_code = main()
+if exit_code and exit_code ~= 0 then
+    -- exit code sometimes is > 255 and fails to be propagated
+    os.exit(1, true)
+end
+
