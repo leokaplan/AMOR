@@ -1,6 +1,8 @@
 currdir = ""---/home/Projects/amor/core/"
 libdir = currdir.."lib/"
+--TODO:fix this require, should be:
 --cron = require libdir.."cron"
+cron = require libdir.."cron/cron"
 gamera = require libdir.."gamera/gamera"
 --require "lib/light"
 global = {}
@@ -43,16 +45,16 @@ global.spawn = (o) ->
     return o
 global.keypressed = (key,scancode,isrepeat) -> 
     global.key[key] = true
-    global.trigger("keypressed_"..key,isrepeat)
+    global.trigger("key_press_"..key,isrepeat)
 global.keyreleased = (key,scancode,isrepeat) -> 
     global.key[key] = nil
-    global.trigger("keyreleased_"..key,isrepeat)
+    global.trigger("key_release_"..key,isrepeat)
 
-global.trigger = (evt,args) ->
-    if global[evt] then global[evt](args)
+global.trigger = (evt,...) ->
+    if global[evt] then global[evt](...)
     for i,o in pairs global.objs do
         if o[evt] then
-            o[evt](o,args)
+            o[evt](o,...)
 
 global.hud = (o, f) -> table.insert global.ui, {o, f}
 global.bg = (o, f) -> table.insert global.background, {o, f}
@@ -88,7 +90,7 @@ global.update = (dt) ->
     lx = (global.W-2*cs*cx)*(1/cs)
     ly = (global.H-2*cs*cy)*(1/cs)
     for k,v in pairs global.key do
-        global.trigger("hold_"..k)
+        global.trigger("key_hold_"..k)
     for k,v in pairs global.timers do 
         if v[1].alive then
             if v[2]\update dt then

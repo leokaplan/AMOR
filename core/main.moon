@@ -7,7 +7,9 @@ love.keyreleased = (key,scancode,isrepeat) -> global.trigger("keyreleased",key,s
 ------------------
 
 ball = require "ball"
+player = require "player"
 love.load = ->
     math.randomseed os.time!
     global.trigger("load")
-    global.spawn (ball global)
+    global.gravity_y = 0
+    global.spawn (player global, global.W/2, global.H/2)

@@ -1,45 +1,43 @@
 actor  = require "actor"
+gun = require "gun"
 bullet = require "bullet"
-anim8 = require "lib/anim8"
+--anim8 = require "lib/anim8"
 class player extends actor 
-
+    
+    walk: (x,y) => 
+        @x += x
+        @y += y
     new: (global,x,y) =>
         super global, x, y, 4, 4
         @vy = 0
         @walk_speed = @global.Mcw
         @jump_power = @h*2 
-        @\equip gun, @w/2, @h/2, bullet
+        @gun = @\equip gun, @w, @h, bullet
         -- distance from feet to ground on the top of the jump parabole
         @bulletcolor = {250,50,50}
         @canonw = @global.Mcw
         @canonh = @global.Mch
-        @impulse = false
         @alive = true
         @life = 5
         @maxlife = 7
-    hold_a:=> @\walk_left!
-    hold_d:=> @\walk_right!
-    hold_w:=> @\walk_up!
-    hold_s:=> @\walk_down!
-    press_j:=> @\shoot_left!
-    press_l:=>@\shoot_right!
-    press_i:=> @\shoot_up!
-    press_k:=> @\shoot_down!
-    press_f:=> @\guard!
-    press_e:=> if @life < @maxlife then @life += 1 
-    press_z:=> print @x,@y
+    key_hold_a:=> @\walk(-1,0)
+    key_hold_d:=> @\walk(1,0)
+    key_hold_w:=> @\walk(0,-1)
+    key_hold_s:=> @\walk(0,1)
+    key_press_j:=> @\trigger("shoot",math.pi)
+    key_press_l:=> @\trigger("shoot",0) 
+    key_press_i:=> @\trigger("shoot",math.pi/2) 
+    key_press_k:=> @\trigger("shoot",math.pi*3/4) 
+    key_press_f:=> @\guard!
+    key_press_e:=> if @life < @maxlife then @life += 1 
+    key_press_z:=> print @x,@y
         
-    canonx: => @x + @w/2
-    canony: => @y + @h/2 
-    spawn_bullet: =>
-        @\spawn bullet @global,@\canonx!-@canonw/2,@\canony!-@canonh/2, @, @dirx,@diry,@bulletcolor
-
     draw: =>
         --@anim\draw @image, @x, @y,0,@w/@framew, @h/@frameh
         @\hud ->
             love.graphics.setColor 255, 0,0
             love.graphics.rectangle "fill", 0, 0,@life*@global.Mcw , 1*@global.Mch
-        @c = {255,255,255}
+        @c = {255,0,255}
         if @onguard then
             @c = {200,200,200}
         if @hit then

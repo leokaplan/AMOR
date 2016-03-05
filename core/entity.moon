@@ -3,6 +3,8 @@ class entity
         @global = global
         @x = x
         @y = y
+    trigger: (event, ...) => 
+        @global.trigger event,unpack{@,...}
     every: (n, f) => @global.every @,n,f
     oneshot: (n, f) => @global.oneshot @,n,f
     spawn: (o) => @global.spawn o

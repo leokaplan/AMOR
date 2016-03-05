@@ -25,7 +25,7 @@ class actor extends entity
                         --@y += @walk_speed
                         --@y -= @walk_speed
     equip:(o,...) =>
-        @\spawn o @global @ ...
+        @\spawn o @global, @, ...
     new:(global, x, y, w, h) =>
         super global, x, y
         @speed_x = 0
