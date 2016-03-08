@@ -26,8 +26,8 @@ class player extends actor
     key_hold_s:=> @\walk(0,1)
     key_press_j:=> @\trigger("shoot",math.pi)
     key_press_l:=> @\trigger("shoot",0) 
-    key_press_i:=> @\trigger("shoot",math.pi/2) 
-    key_press_k:=> @\trigger("shoot",math.pi*3/4) 
+    key_press_i:=> @\trigger("shoot",-math.pi/2) 
+    key_press_k:=> @\trigger("shoot",math.pi/2) 
     key_press_f:=> @\guard!
     key_press_e:=> if @life < @maxlife then @life += 1 
     key_press_z:=> print @x,@y
@@ -82,8 +82,8 @@ class player extends actor
     collide: (o) =>
         --print @\checkcol o
         @\block(o,{"wall","enemy","boss"})
-        if @global.kind("bullet") then
-            if not @global.kind("player_bullet") then
+        if @global.kind(o,"bullet") then
+            if not @global.kind(o,"player_bullet") then
                 if not @onguard then
                     @life -= 1
                     @hit = true

@@ -1,5 +1,5 @@
 [submodule "core/lib/cron.lua"]
-	path = core/lib/cron.lua
+	path = core/lib/cron
 	url = https://github.com/kikito/cron.lua
 [submodule "core/lib/gamera"]
 	path = core/lib/gamera

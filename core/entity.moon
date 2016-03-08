@@ -3,6 +3,7 @@ class entity
         @global = global
         @x = x
         @y = y
+    die: () => @global.kill @
     trigger: (event, ...) => 
         @global.trigger event,unpack{@,...}
     every: (n, f) => @global.every @,n,f

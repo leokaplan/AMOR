@@ -2,8 +2,8 @@ currdir = ""---/home/Projects/amor/core/"
 libdir = currdir.."lib/"
 --TODO:fix this require, should be:
 --cron = require libdir.."cron"
-cron = require libdir.."cron/cron"
 gamera = require libdir.."gamera/gamera"
+cron = require libdir.."cron/cron"
 --require "lib/light"
 global = {}
 global.level = 0
@@ -78,6 +78,11 @@ collision = (a,b) ->
     b.x < a.x + a.w and 
     a.y < b.y + b.h and
     b.y < a.y + a.h 
+
+global.kill = (o) ->
+    for k,v in pairs(global.objs) do
+        if v == o then
+            global.objs[k] = nil
 
 global.update = (dt) ->
     if global.level == 0 then

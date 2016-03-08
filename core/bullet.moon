@@ -7,10 +7,17 @@ class bullet extends actor
         love.graphics.setColor 255,0,0
         love.graphics.rectangle "fill", @x, @y, @w, @h
     collide: (o) => 
-        if @global.kind(o,"wall") or @global.kind(o,"enemy") then
-            return true
+        return true
     update: (dt) =>
-        @x += math.cos(@angle)
-        @y += math.sin(@angle)
+        @x += math.cos(@angle)*dt*100
+        @y += math.sin(@angle)*dt*100
+        if @x < 0 or @x >@global.W then
+            --@alive = false
+            @\die!
+            return true
+        if @y < 0 or @y >@global.H then
+            --@alive = false
+            @=nil
+            return true
     
 bullet 
