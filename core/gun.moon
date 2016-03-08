@@ -21,7 +21,6 @@ class gun extends entity
                 print "shoot"
                 @\spawn (@.bullet @global,@x,@y,angle)
                 @cooldown = true
-                --TODO:???
                 @\oneshot 0.2, -> 
                     @cooldown = false
     update: (dt) => 

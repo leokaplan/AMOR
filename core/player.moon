@@ -1,9 +1,12 @@
 actor  = require "actor"
 gun = require "gun"
-bullet = require "bullet"
+bullet = require "player_bullet"
 --anim8 = require "lib/anim8"
 class player extends actor 
-    
+    guard:  => 
+        if not @onguard then 
+            @onguard = true
+            @\oneshot 0.8, -> @onguard = false
     walk: (x,y) => 
         @x += x
         @y += y
@@ -20,6 +23,7 @@ class player extends actor
         @alive = true
         @life = 5
         @maxlife = 7
+        @onguard = false
     key_hold_a:=> @\walk(-1,0)
     key_hold_d:=> @\walk(1,0)
     key_hold_w:=> @\walk(0,-1)

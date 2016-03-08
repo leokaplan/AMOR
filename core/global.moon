@@ -52,6 +52,8 @@ global.keyreleased = (key,scancode,isrepeat) ->
 
 global.trigger = (evt,...) ->
     if global[evt] then global[evt](...)
+    global.propagate(evt,...)
+global.propagate = (evt,...) ->    
     for i,o in pairs global.objs do
         if o[evt] then
             o[evt](o,...)
@@ -64,7 +66,7 @@ global.draw = ->
             love.graphics.rectangle "fill", 0, 0, love.graphics.getWidth!*2, love.graphics.getHeight!
             for k,v in pairs global.background do 
                     v[2]!
-   
+            global.propagate("draw") 
     for k,v in pairs global.ui do 
         if v[1].alive then
             v[2]!

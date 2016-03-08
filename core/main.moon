@@ -1,6 +1,6 @@
 --love binding----    
 global = require "global"
-love.draw = -> global.trigger("draw")
+love.draw = -> global.draw!
 love.update = (dt) -> global.trigger("update",dt)
 love.keypressed = (key,scancode,isrepeat) -> global.trigger("keypressed",key,scancode,isrepeat)
 love.keyreleased = (key,scancode,isrepeat) -> global.trigger("keyreleased",key,scancode,isrepeat)
