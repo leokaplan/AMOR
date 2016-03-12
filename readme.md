@@ -65,7 +65,7 @@ check the [documentation]()!
    
 More documentation
 
-auto make and build
+auto build with [love-release](https://github.com/MisterDA/love-release)
 
 cli 
 
