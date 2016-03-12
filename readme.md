@@ -59,7 +59,7 @@ Efforts will be made just to be compatible with love 0.10
     * button
     * bullet
 
-check the [documentation]()!
+check the [documentation](https://github.com/leokaplan/AMOR/blob/master/doc.md)!
 
 ## Todo
    
