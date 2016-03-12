@@ -66,9 +66,7 @@ check the [documentation]()!
 More documentation
 
 auto build with [love-release](https://github.com/MisterDA/love-release)
-
-cli 
-
+ 
 install with luarocks
 
 tests and eventually ci
