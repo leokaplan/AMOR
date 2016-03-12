@@ -37,7 +37,8 @@ class gun extends entity
             if not @cooldown then 
                 @dir = angle
                 @\turn @dir
-                @\spawn (@.bullet @global,@x,@y,angle)
+                
+                @\spawn (@.bullet @global,@x+math.cos(@dir)*@w/2,@y+math.sin(@dir)*@h/2,angle)
                 @cooldown = true
                 @\oneshot 0.2, -> 
                     @cooldown = false

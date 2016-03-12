@@ -14,14 +14,10 @@ class player extends actor
         @y += y
     new: (global,x,y) =>
         super global, x, y, 4, 4
-        @vy = 0
         @walk_speed = @global.Mcw
-        @jump_power = @h*2 
         @gun = @\equip gun, @w, @h,math.pi/2, bullet
         -- distance from feet to ground on the top of the jump parabole
         @bulletcolor = {250,50,50}
-        @canonw = @global.Mcw
-        @canonh = @global.Mch
         @alive = true
         @life = 5
         @maxlife = 7
@@ -44,6 +40,7 @@ class player extends actor
         @\trigger("shoot",math.pi/2) 
     key_press_f:=> @\guard!
     key_press_e:=> if @life < @maxlife then @life += 1 
+    key_press_r:=> @life -= 1 
     key_press_z:=> print @x,@y
         
     draw: =>
@@ -72,18 +69,6 @@ class player extends actor
         if @life <= 0 then
             @global.restart!
         return false
-    action: =>
-        if not @onguard then
-            for k,v in pairs @control do 
-                if (love.keyboard.isDown k) then
-                    if v.hold then v.hold!
-                    if not @key[k] then 
-                        @key[k] = true
-                        if v.press then v.press!
-                else
-                    if @key[k] then
-                        if v.release then v.release!
-                        @key[k] = false
     
     collide: (o) =>
         --print @\checkcol o
