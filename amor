@@ -22,30 +22,32 @@
 --]]
 local lfs = require "lfs"
 
-local function help()
-    print("Usage: amor command directory\n")
-    print("command list:")
+comp_dir = "compiled_lua"
+base_dir = (debug.getinfo(1).source):match("^@?(.-)/amor")
+cmd = {}
+cmd["make"] = function(dir)
+    lfs.chdir(dir)
+    compile("",comp_dir)
+    lfs.chdir("-")
 end
-local function main()
-    local command = arg[1]
-    local dir = arg[2]
-    local current_dir = lfs.currentdir()
-    if command and dir then
-        --check if dir is actually a dir
-        if command == "make" then
-            --cd dir
-            compile("src","compiled_lua")
-        elseif command == "make run" then
-            --cd dir
-            compile("src","compiled_lua")
-            run("compiled_lua") 
-        elseif command == "build" then
-        end
-    else
-        help()
-    end
-    --cd current_dir 
+cmd["makerun"] = function(dir)
+    cmd["make"](dir)
+    run(comp_dir) 
 end
+cmd["build"] = function(dir)
+end
+cmd["init"] = function(dir)
+    lfs.mkdir(dir)
+    lfs.chdir(dir)
+    lfs.mkdir(comp_dir)
+    lfs.chdir(comp_dir)
+    lfs.link(base_dir.."/../../core/"..comp_dir, "core",true)
+    lfs.chdir("..")
+    --exec("cd "..lfs.currentdir().." && ls -l "..base_dir.."/core && cp '"..base_dir.."/core/main.moon' 'main.moon'")
+    exec(" cp "..base_dir.."/../core/main.moon main.moon")
+
+end
+
 function exec(str)
     assert(os.execute(str))
 end
@@ -53,12 +55,42 @@ function compile(src,target)
     exec("moonc -t ".. target .. " " .. src .."*.moon")
 end
 function run(dir) 
-    exec("cd "..dir) 
+    lfs.chdir(dir)
     exec("love .")
 end
-local exit_code = main()
+function cd(dir)
+end
+
+local function main(command,dir)
+    local current_dir = lfs.currentdir()
+    if dir then
+        --check if dir is actually a dir
+        if cmd[command] then
+            cmd[command](dir)
+        else
+            command = command or ""
+            print("command '"..command.."' does not exist")
+            help()
+        end
+    else
+        dir = dir or ""
+        print("path '"..dir.."' does not exist")
+        help()
+    end
+    --cd current_dir 
+end
+function help()
+    print("Usage: amor command directory\n")
+    print("command list:")
+    for k,v in pairs(cmd) do
+        print(k)
+    end
+end
+
+local command = arg[1]
+local dir = arg[2]
+local exit_code = main(command,dir)
 if exit_code and exit_code ~= 0 then
     -- exit code sometimes is > 255 and fails to be propagated
     os.exit(1, true)
 end
-
