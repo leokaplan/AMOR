@@ -50,35 +50,32 @@ Efforts will be made just to be compatible with love 0.10
 # Class tree
 * entity
   * level
-  * phantom
-    * bg 
+  * bg 
   * text
-  * wall
   * actor
+    * wall
     * player
     * enemy
-  * button
-  * bullet
+    * button
+    * bullet
 
 check the [documentation]()!
 
 ## Todo
    
-    More documentation
-    separate generic from specific code
-    actor - item relationship
-    auto make and build
-    cli 
-    install with luarocks
-    tests and eventually ci
-    UI class tree
-    collisions with [HC](https://github.com/vrld/HC)
-    animations with [anim8](https://github.com/kikito/anim8)
+More documentation
+auto make and build
+cli 
+install with luarocks
+tests and eventually ci
+UI class tree
+collisions with [HC](https://github.com/vrld/HC)
+animations with [anim8](https://github.com/kikito/anim8)
     
 ## libs integrations:    
      
-    lights with [light_world](https://github.com/tanema/light_world.lua) (need fixes for 0.10)
-    camera with [gamera](https://github.com/kikito/gamera)
-    timers with [cron](https://github.com/kikito/cron.lua)
+lights with [light_world](https://github.com/tanema/light_world.lua) (need fixes for 0.10)
+camera with [gamera](https://github.com/kikito/gamera)
+timers with [cron](https://github.com/kikito/cron.lua)
 
 
