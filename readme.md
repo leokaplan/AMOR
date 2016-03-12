@@ -64,18 +64,27 @@ check the [documentation]()!
 ## Todo
    
 More documentation
+
 auto make and build
+
 cli 
+
 install with luarocks
+
 tests and eventually ci
+
 UI class tree
+
 collisions with [HC](https://github.com/vrld/HC)
+
 animations with [anim8](https://github.com/kikito/anim8)
     
 ## libs integrations:    
      
 lights with [light_world](https://github.com/tanema/light_world.lua) (need fixes for 0.10)
+
 camera with [gamera](https://github.com/kikito/gamera)
+
 timers with [cron](https://github.com/kikito/cron.lua)
 
 
