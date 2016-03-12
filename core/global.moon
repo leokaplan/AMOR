@@ -1,5 +1,5 @@
-currdir = ""---/home/Projects/amor/core/"
-libdir = currdir.."lib/"
+currdir = ""
+libdir = currdir.."core/lib/"
 --TODO:fix this require, should be:
 --cron = require libdir.."cron"
 gamera = require libdir.."gamera/gamera"

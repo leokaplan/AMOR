@@ -1,4 +1,4 @@
-actor  = require "actor"
+actor  = require "core/actor"
 class ball extends actor
     new: (global) =>
         super global, global.W/2,global.H/2,5,5

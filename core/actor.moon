@@ -1,4 +1,4 @@
-entity  = require "entity"
+entity  = require "core/entity"
 class actor extends entity
     checkcol: (o) => 
         left = o.x < @x + @w and @x + @w < o.x +o.w 

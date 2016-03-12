@@ -1,4 +1,4 @@
-actor  = require "actor"
+actor  = require "core/actor"
 class bullet extends actor
     new: (global,x,y,angle) =>
         super global, x,y,1,1
@@ -9,15 +9,11 @@ class bullet extends actor
     collide: (o) => 
         return true
     update: (dt) =>
-        @x += math.cos(@angle)*dt*100
-        @y += math.sin(@angle)*dt*100
+        @x += math.cos(@angle)*dt*500
+        @y += math.sin(@angle)*dt*500
         if @x < 0 or @x >@global.W then
-            --@alive = false
             @\die!
-            return true
         if @y < 0 or @y >@global.H then
-            --@alive = false
-            @=nil
-            return true
+            @\die!
     
 bullet 
