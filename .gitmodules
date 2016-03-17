@@ -13,3 +13,6 @@
 [submodule "core/lib/HC"]
 	path = core/lib/HC
 	url = https://github.com/vrld/HC
+[submodule "core/lib/hxdx"]
+	path = core/lib/hxdx
+	url = https://github.com/adonaac/hxdx.git
