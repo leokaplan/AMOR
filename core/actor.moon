@@ -24,12 +24,16 @@ class actor extends entity
                         @y += @walk_speed
                         --@y += @walk_speed
                         --@y -= @walk_speed
+    die: () => 
+        @body\destroy! 
+        @global.kill @
     equip:(o,...) =>
         @\spawn o @global, @, ...
-    new:(global, x, y, w, h) =>
+    new:(global, x, y, w, h,typ) =>
         super global, x, y
         @speed_x = 0
         @speed_y = 0
         @w = w*@global.Mcw
         @h = h*@global.Mch
+        @body = @global.world\newRectangleCollider(@x,@y,@w,@h,{body_type:typ or "dynamic"})
         @alive = true

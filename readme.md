@@ -12,10 +12,12 @@ AMÖR is a functional event based game development framework written in [moonscr
 
         $ sudo apt-get install lua love luarocks
         $ git clone --recursive https://github.com/leokaplan/amor 
+        $ luarocks install moonscript
         $ cd amor/
-        amor $ luarocks install moonscript
-        amor $ cd demos/sidescroller/
-        amor/demos/sidescroller $ make run
+        $ ./amor makerun examples/topdown
+        #you can add amor to your path with:
+        $ export PATH="$PATH":.
+
 
 
 # Philosophy
@@ -50,14 +52,8 @@ Efforts will be made just to be compatible with love 0.10
 # Class tree
 * entity
   * level
-  * bg 
   * text
   * actor
-    * wall
-    * player
-    * enemy
-    * button
-    * bullet
 
 check the [documentation](https://github.com/leokaplan/AMOR/blob/master/doc.md)!
 
@@ -73,7 +69,7 @@ tests and eventually ci
 
 UI class tree
 
-collisions with [HC](https://github.com/vrld/HC)
+plugin system: example collisions with [HC](https://github.com/vrld/HC) and [bump](https://github.com/kikito/bump.lua)
 
 animations with [anim8](https://github.com/kikito/anim8)
     

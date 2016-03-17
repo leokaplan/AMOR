@@ -10,11 +10,11 @@ class player extends actor
             @onguard = true
             @\oneshot 0.8, -> @onguard = false
     walk: (x,y) => 
-        @x += x
-        @y += y
+        @body.body\applyLinearImpulse x*@speedx,y*@speedy
     new: (global,x,y) =>
         super global, x, y, 4, 4
-        @walk_speed = @global.Mcw
+        @speedx = @global.Mcw
+        @speedy = @global.Mch
         --@gun = @\equip gun, @w, @h,math.pi/2, bullet
         --@gun2 = @\equip gun, @w/2, @h,math.pi/2, bullet
         -- distance from feet to ground on the top of the jump parabole
@@ -73,7 +73,7 @@ class player extends actor
     
     collide: (o) =>
         --print @\checkcol o
-        @\block(o,{"wall","enemy","boss"})
+--        @\block(o,{"wall","enemy","boss"})
         if @global.kind(o,"bullet") then
             if not @global.kind(o,"player_bullet") then
                 if not @onguard then

@@ -4,6 +4,8 @@ libdir = currdir.."core/lib/"
 --cron = require libdir.."cron"
 gamera = require libdir.."gamera/gamera"
 cron = require libdir.."cron/cron"
+hx = require libdir..'hxdx/hxdx'
+--HC = require libdir.."HC"
 --require "lib/light"
 global = {}
 global.level = 0
@@ -12,18 +14,19 @@ global.key = {}
 global.timers = {}
 global.ui = {}
 global.background = {}
-global.load = -> global.init!
+global.load = -> global.init global.w,global.h,global.gravity_x,global.gravity_y
     --global.ground = global.H*7/8
 global.init = (w,h,gx,gy) ->
     global.W, global.H = love.graphics.getDimensions!
     global.Mcw = 10
     global.Mch = 10
     global.gravity_x = gx or 0
-    global.gravity_y = gy or 98*global.Mch
+    global.gravity_y = gy or 9.8*global.Mch
     w = w or global.W
     h = h or global.H
     global.camera = gamera.new 0, 0 , w,h
     global.level = 1
+    global.world = hx.newWorld {gravity_y: global.gravity_y}--math.max(global.Mcw,global.Mch))
 
 
 global.kind = (o,k) -> 
@@ -61,17 +64,24 @@ global.propagate = (evt,...) ->
 global.hud = (o, f) -> table.insert global.ui, {o, f}
 global.bg = (o, f) -> table.insert global.background, {o, f}
 global.draw = ->
+    
     global.camera\draw (l,t,w,h)->
             love.graphics.setColor 255, 255, 255
             love.graphics.rectangle "fill", 0, 0, love.graphics.getWidth!*2, love.graphics.getHeight!
             for k,v in pairs global.background do 
                     v[2]!
             global.propagate("draw") 
+            if global.debug then
+                global.world\draw!
     for k,v in pairs global.ui do 
         if v[1].alive then
             v[2]!
         else
             global.ui[k] = nil
+    if global.debug then
+        love.graphics.setColor 100, 100,100
+        love.graphics.print love.timer.getFPS!,10,10
+        love.graphics.print #global.objs.." "..#global.timers,10,20
 
 
 
@@ -99,29 +109,34 @@ global.update = (dt) ->
     for k,v in pairs global.key do
         global.trigger("key_hold_"..k)
     for k,v in pairs global.timers do 
-        if v[1].alive then
+        if global.kind(v[1],"entity") then
             if v[2]\update dt then
                 global.timers[k] = nil
         else
             global.timers[k] = nil
     
+    global.world\update(dt)
     for i,o in pairs global.objs do
         --if it is a physical being
         if global.kind(o,"actor") then
             --TODO:HC
             --apply gravity
-            o.speed_x += global.gravity_x*dt
-            o.speed_y += global.gravity_y*dt
+            --o.speed_x += global.gravity_x*dt
+            --o.speed_y += global.gravity_y*dt
             --apply velocities
-            o.x += o.speed_x*dt
-            o.y += o.speed_y*dt
+            --o.x += o.speed_x*dt
+            --o.y += o.speed_y*dt
+            x,y = o.body.body\getPosition!
+            o.x,o.y = x-o.w/2,y-o.h/2 
             for k,v in next,global.objs,i do
                 if global.kind(v,"actor") then
                     if o and v and o ~= v then
                         --resolve collision
                         if collision(o,v) then
-                            ro = o\collide v            
-                            rv = v\collide o
+                            if o.collide then
+                                ro = o\collide v            
+                            if v.collide then
+                                rv = v\collide o
                             if ro then 
                                 global.objs[i] = nil
                                 --o = nil

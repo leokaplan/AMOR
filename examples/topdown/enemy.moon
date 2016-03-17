@@ -14,7 +14,6 @@ class enemy extends actor
         @x += x
         @y += y
     new: (global,x,y) =>
-        print "oi"
         super global, x, y, 4, 4
         @walk_speed = @global.Mcw
         @jump_power = @h*2 
