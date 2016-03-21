@@ -8,6 +8,6 @@ love.keyreleased = (key,scancode,isrepeat) -> global.trigger("keyreleased",key,s
 level = require "level"
 love.load = ->
     math.randomseed os.time!
-    --global.debug = true
+    global.debug = true
     global.spawn level global
     global.trigger("load")

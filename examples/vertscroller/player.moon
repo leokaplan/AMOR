@@ -10,16 +10,15 @@ class player extends actor
             @onguard = true
             @\oneshot 0.8, -> @onguard = false
     walk: (x,y) => 
-        @body.body\applyLinearImpulse x*@speedx,y*@speedy
+        @\move x*@speedx,y*@speedy
     new: (global,x,y) =>
-        super global, x, y, 4, 4
+        super global, x, y, 40, 40,nil,"player"
         @speedx = @global.Mcw
         @speedy = @global.Mch
         --@gun = @\equip gun, @w, @h,math.pi/2, bullet
         --@gun2 = @\equip gun, @w/2, @h,math.pi/2, bullet
         -- distance from feet to ground on the top of the jump parabole
         @bulletcolor = {250,50,50}
-        @alive = true
         @life = 5
         @maxlife = 7
         @onguard = false
@@ -59,6 +58,8 @@ class player extends actor
 
 
     update: (dt) =>
+        if @life <= 0 then
+            @\die!
         if not @global.camera.locked then
             if @onguard then
                 @\cameraScale 1.8, 3, dt
@@ -67,20 +68,15 @@ class player extends actor
             else
                 @\cameraScale 1.5-@life/10, 3, dt
                 @\cameraPosition @x,1, @y,1, dt
-        if @life <= 0 then
-            @global.restart!
-        return false
     
-    collide: (o) =>
+    enter: (o) =>
         --print @\checkcol o
 --        @\block(o,{"wall","enemy","boss"})
-        if @global.kind(o,"bullet") then
-            if not @global.kind(o,"player_bullet") then
+        if @global.kind(o,"rock") then
+               -- print o.__class.__name
                 if not @onguard then
                     @life -= 1
                     @hit = true
                     @\oneshot 0.2, -> @hit = false
-                    o.alive = false
-        return false
     
 player

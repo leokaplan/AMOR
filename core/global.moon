@@ -82,6 +82,10 @@ global.draw = ->
         love.graphics.setColor 100, 100,100
         love.graphics.print love.timer.getFPS!,10,10
         love.graphics.print #global.objs.." "..#global.timers,10,20
+        i = 0
+        for k,v in pairs(global.objs) do
+            love.graphics.print k.." "..v.__class.__name,global.W-100,20+i*10
+            i+=1
 
 
 
@@ -119,28 +123,30 @@ global.update = (dt) ->
     for i,o in pairs global.objs do
         --if it is a physical being
         if global.kind(o,"actor") then
-            --TODO:HC
-            --apply gravity
-            --o.speed_x += global.gravity_x*dt
-            --o.speed_y += global.gravity_y*dt
-            --apply velocities
-            --o.x += o.speed_x*dt
-            --o.y += o.speed_y*dt
             x,y = o.body.body\getPosition!
+            col = global.world\queryRectangleArea(x, y, o.w, o.h)
             o.x,o.y = x-o.w/2,y-o.h/2 
-            for k,v in next,global.objs,i do
-                if global.kind(v,"actor") then
-                    if o and v and o ~= v then
+            --if #col > 0 then 
+                --print o.__class.__name,#col
+            for k,v in pairs col do
+                if o and v then
+                        if v.body then 
+                            actor = v.body\getUserData!            
+                            if o.enter then
+                                o\enter actor
+                            if actor.enter then
+                                actor\enter o
+                     
+--            for k,v in pairs global.objs do
+--                if global.kind(v,"actor") then
                         --resolve collision
-                        if collision(o,v) then
-                            if o.collide then
-                                ro = o\collide v            
-                            if v.collide then
-                                rv = v\collide o
-                            if ro then 
-                                global.objs[i] = nil
-                                --o = nil
-                            if rv then 
-                                global.objs[k] = nil
-                                --v = nil
+                        
+                        --if o and o.body and o.body\enter(v.body.collision_class) then
+
+--                            if o.enter then
+--                                ro = o\enter v            
+--                        if o and o.body and o.body\exit(v.body.collision_class) then
+--                            if o.exit then
+--                                ro = o\exit v            
+
 global

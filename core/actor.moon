@@ -1,39 +1,29 @@
 entity  = require "core/entity"
 class actor extends entity
-    checkcol: (o) => 
-        left = o.x < @x + @w and @x + @w < o.x +o.w 
-        right = o.x < @x and @x < o.x +o.w 
-        up = o.y < @y + @h and @y + @h < o.y +o.h 
-        down = o.y < @y and @y < o.y +o.h 
-        return left, right, up, down
-    block: (o,t) =>
-        left, right, up, down = @\checkcol o
-        for k,v in pairs t do 
-            if @global.kind(o,v) then
-                if right and left and up and down then 
-                    print "error"
-                if up and down or not (up or down)then
-                    if right then
-                        @x += @walk_speed
-                    elseif left then
-                        @x -= @walk_speed
-                if right and left or not (right or left)then
-                    if up then
-                        @y -= @walk_speed
-                    elseif down then
-                        @y += @walk_speed
-                        --@y += @walk_speed
-                        --@y -= @walk_speed
     die: () => 
         @body\destroy! 
         @global.kill @
     equip:(o,...) =>
         @\spawn o @global, @, ...
-    new:(global, x, y, w, h,typ) =>
+    move: (x,y) =>
+        @body.body\applyLinearImpulse x,y
+    new:(global, x, y, w, h,typ,cls,ignores) =>
         super global, x, y
-        @speed_x = 0
         @speed_y = 0
-        @w = w*@global.Mcw
-        @h = h*@global.Mch
-        @body = @global.world\newRectangleCollider(@x,@y,@w,@h,{body_type:typ or "dynamic"})
+        @w = w--*@global.Mcw
+        @speed_x = 0
+        @h = h--*@global.Mch
+        @body = {}
+        @body.class = cls or "Default"
+        --if not @\get classes, cls then
+        if not @global.classes then
+            @global.classes = {}
+            @global.classes["Default"] = true
+        if not @global.classes[@body.class] then  
+            @global.world\addCollisionClass(@body.class, ignores: ignores or {})
+        --    @\set classes, cls, true
+            @global.classes[@body.class] = true
+        @body.type = typ or "dynamic"
+        @body = @global.world\newRectangleCollider(@x,@y,@w,@h,{body_type:@body.type, collision_class:@body.class})
+        @body.body\setUserData @
         @alive = true
